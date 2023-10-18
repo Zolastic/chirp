@@ -31,11 +31,7 @@ export const postsRouter = createTRPCRouter({
       {
         const author = users.find((user) => user.id === post.authorId);
 
-        // if (!author) {
-        //   throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
-        // }
-
-        if (author?.username) {
+        if (author === undefined || author.username === null) {
           throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
         }
 
