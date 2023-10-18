@@ -1,5 +1,5 @@
 import { clerkClient } from "@clerk/nextjs";
-import { User } from "@clerk/nextjs/dist/types/server";
+import type { User } from "@clerk/nextjs/dist/types/server";
 import { TRPCError } from "@trpc/server";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
@@ -31,8 +31,9 @@ export const postsRouter = createTRPCRouter({
       {
         const author = users.find((user) => user.id === post.authorId);
 
-        if (!author || !author.username)
+        if (!author || !author.username) {
           throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+        }
 
         return {
           post: post,
