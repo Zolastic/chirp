@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import Head from "next/head";
 import { SignInButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
@@ -15,7 +17,18 @@ dayjs.extend(relativeTime);
 const CreatePostWizard = () => {
   const { user } = useUser();
 
-  // console.log(user);
+  const [input, setInput] = useState<string>("");
+
+  const ctx = api.useContext();
+
+  const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
+    onSuccess: () => {
+      setInput("");
+      ctx.posts.getAll.invalidate(); // "invalidate" means invalidating the cache and refetching the data
+    },
+  });
+
+  console.log(user);
 
   if (!user) return null;
 
@@ -31,7 +44,12 @@ const CreatePostWizard = () => {
       <input
         className="grow bg-transparent outline-none"
         placeholder="What's on your mind?"
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        disabled={isPosting}
       />
+      <button onClick={() => mutate({ content: input })}>Post</button>
     </div>
   );
 };
