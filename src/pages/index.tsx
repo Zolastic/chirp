@@ -24,7 +24,7 @@ const CreatePostWizard = () => {
   const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
     onSuccess: () => {
       setInput("");
-      ctx.posts.getAll.invalidate(); // "invalidate" means invalidating the cache and refetching the data
+      void ctx.posts.getAll.invalidate(); // "invalidate" means invalidating the cache and refetching the data
     },
   });
 

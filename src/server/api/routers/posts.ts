@@ -70,5 +70,7 @@ export const postsRouter = createTRPCRouter({
           content: input.content,
         },
       });
+
+      return post;
     }),
 });
