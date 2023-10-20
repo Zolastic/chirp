@@ -13,7 +13,7 @@ type ProfilePageProps = {
 };
 
 export default function ProfilePage({ username }: ProfilePageProps) {
-  const { data, isLoading } = api.profile.getUserByUsername.useQuery({
+  const { data } = api.profile.getUserByUsername.useQuery({
     username,
   });
 
