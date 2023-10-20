@@ -74,7 +74,7 @@ export const postsRouter = createTRPCRouter({
   create: privateProcedure
     .input(
       z.object({
-        content: z.string().emoji().min(1).max(280),
+        content: z.string().emoji("Only emojis are allowed").min(1).max(280), // z is from zod. zod is a library for validating data in typescript. "Only emojis are allowed" is the error message if the string isn't in emoji format. min(1) and max(280) are the min and max length of the string.
       }),
     )
     .mutation(async ({ ctx, input }) => {
