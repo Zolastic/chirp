@@ -1,14 +1,11 @@
 import Head from "next/head";
 import { api } from "~/utils/api";
-import { createServerSideHelpers } from "@trpc/react-query/server";
-import { db } from "~/server/db";
-import { appRouter } from "~/server/api/root";
-import superjson from "superjson";
 import type { GetStaticProps } from "next";
 import PageLayout from "~/components/layout";
 import Image from "next/image";
 import { LoadingPage } from "~/components/loading";
 import { PostView } from "~/components/postview";
+import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 
 type ProfilePageProps = {
   username: string;
@@ -38,8 +35,6 @@ export default function ProfilePage({ username }: ProfilePageProps) {
   });
 
   if (!data) return <div>Something went wrong</div>;
-
-  console.log("username props", username);
 
   return (
     <>
@@ -71,11 +66,7 @@ export default function ProfilePage({ username }: ProfilePageProps) {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const helpers = createServerSideHelpers({
-    router: appRouter,
-    ctx: { db, userId: null },
-    transformer: superjson, // optional - adds superjson serialization
-  });
+  const helpers = generateSSGHelper();
 
   const slug = context.params?.slug;
 
