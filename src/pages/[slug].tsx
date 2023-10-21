@@ -65,6 +65,10 @@ export default function ProfilePage({ username }: ProfilePageProps) {
   );
 }
 
+// SSG (Static Site Generation) generates the page at build time, allowing it to be cached by the CDN (Content Delivery Network).
+// The cached version will be served to all users until the data changes, at which point the page will be regenerated.
+// It generally reduces loading time for the users since the page is already generated and cached.
+// The function getStaticProps is responsible for fetching the necessary data at build time, which helps with pre-generating the static page.
 export const getStaticProps: GetStaticProps = async (context) => {
   const helpers = generateSSGHelper();
 
@@ -84,6 +88,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 };
 
+// This is a fallback page. If the page is not generated at build time, it will be generated at request time.
+// This means that if the page has no data cached by the CDN, the page will be generated at request time.
+// This may cause a delay in loading time for the user, since the page is not cached
 export const getStaticPaths = () => {
   return {
     paths: [],
